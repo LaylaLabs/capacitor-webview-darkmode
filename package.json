@@ -1,0 +1,72 @@
+{
+  "name": "@laylalabs/capacitor-webview-darkmode",
+  "version": "0.0.1",
+  "description": "Native WebView dark mode manager for Capacitor with algorithmic darkening, system theme change listener, and instant HTML dark class synchronization.",
+  "main": "dist/plugin.cjs.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "unpkg": "dist/plugin.js",
+  "files": [
+    "android/src/main/",
+    "android/build.gradle",
+    "dist/",
+    "ios/Sources",
+    "Package.swift",
+    "LaylalabsCapacitorWebviewDarkmode.podspec"
+  ],
+  "author": "LaylaLabs <dev@laylalabs.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LaylaLabs/capacitor-webview-darkmode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/LaylaLabs/capacitor-webview-darkmode/issues"
+  },
+  "keywords": [
+    "capacitor",
+    "plugin",
+    "native",
+    "darkmode",
+    "webview",
+    "algorithmic-darkening",
+    "tailwind",
+    "theme"
+  ],
+  "scripts": {
+    "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
+    "verify:ios": "xcodebuild -scheme LaylalabsCapacitorWebviewDarkmode -destination generic/platform=iOS",
+    "verify:android": "cd android && ./gradlew clean build test && cd ..",
+    "verify:web": "npm run build",
+    "lint": "npm run eslint && npm run prettier -- --check",
+    "fmt": "npm run eslint -- --fix && npm run prettier -- --write",
+    "eslint": "eslint . --ext ts",
+    "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
+    "docgen": "docgen --api WebviewDarkmodePlugin --output-readme README.md --output-json dist/docs.json",
+    "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.mjs",
+    "clean": "rimraf ./dist",
+    "watch": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/docgen": "^0.3.0",
+    "@capacitor/ios": "^7.0.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "rimraf": "^5.0.5",
+    "rollup": "^4.9.6",
+    "typescript": "~5.4.0"
+  },
+  "peerDependencies": {
+    "@capacitor/core": ">=7.0.0"
+  },
+  "capacitor": {
+    "ios": {
+      "src": "ios"
+    },
+    "android": {
+      "src": "android"
+    }
+  }
+}
