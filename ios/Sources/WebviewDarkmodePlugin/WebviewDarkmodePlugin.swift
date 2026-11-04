@@ -15,6 +15,7 @@ public class WebviewDarkmodePlugin: CAPPlugin, CAPBridgedPlugin {
     private var currentMode: String = "auto"
     private var syncHtmlClass: Bool = true
     private var htmlDarkClassName: String = "dark"
+    private var lastAppliedIsDark: Bool?
 
     override public func load() {
         super.load()
@@ -25,6 +26,32 @@ public class WebviewDarkmodePlugin: CAPPlugin, CAPBridgedPlugin {
 
         let isDark = resolveIsDark(mode: currentMode)
         applyTheme(isDark: isDark, notify: false)
+
+        // Observa retorno ao primeiro plano para sincronizar temas alterados pelo sistema
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleAppForeground),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleAppForeground),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc private func handleAppForeground() {
+        guard currentMode == "auto" else { return }
+        let isDark = resolveIsDark(mode: "auto")
+        if lastAppliedIsDark != isDark {
+            applyTheme(isDark: isDark, notify: true)
+        }
     }
 
     @objc func getDarkMode(_ call: CAPPluginCall) {
@@ -63,16 +90,25 @@ public class WebviewDarkmodePlugin: CAPPlugin, CAPBridgedPlugin {
         if mode == "light" {
             return false
         }
-        // "auto" -> query trait collection
-        DispatchQueue.main.sync {
+        // "auto" -> consulta o trait collection da window ou da tela
+        if Thread.isMainThread {
             if let window = self.bridge?.viewController?.view.window {
                 return window.traitCollection.userInterfaceStyle == .dark
             }
             return UIScreen.main.traitCollection.userInterfaceStyle == .dark
+        } else {
+            return DispatchQueue.main.sync {
+                if let window = self.bridge?.viewController?.view.window {
+                    return window.traitCollection.userInterfaceStyle == .dark
+                }
+                return UIScreen.main.traitCollection.userInterfaceStyle == .dark
+            }
         }
     }
 
     private func applyTheme(isDark: Bool, notify: Bool) {
+        self.lastAppliedIsDark = isDark
+
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
 
@@ -102,4 +138,3 @@ public class WebviewDarkmodePlugin: CAPPlugin, CAPBridgedPlugin {
         }
     }
 }
-
