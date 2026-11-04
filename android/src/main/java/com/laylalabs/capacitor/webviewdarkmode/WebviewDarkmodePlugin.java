@@ -170,3 +170,4 @@ public class WebviewDarkmodePlugin extends Plugin {
         });
     }
 }
+

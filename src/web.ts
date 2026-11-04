@@ -64,3 +64,4 @@ export class LaylaWebviewDarkmodeWeb extends WebPlugin implements WebviewDarkmod
     });
   }
 }
+

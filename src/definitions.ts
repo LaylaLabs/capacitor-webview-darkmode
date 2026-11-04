@@ -73,3 +73,4 @@ export interface WebviewDarkmodePlugin {
    */
   removeAllListeners(): Promise<void>;
 }
+

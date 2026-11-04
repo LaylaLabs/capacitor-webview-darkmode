@@ -21,3 +21,4 @@ let package = Package(
             path: "ios/Sources/WebviewDarkmodePlugin")
     ]
 )
+

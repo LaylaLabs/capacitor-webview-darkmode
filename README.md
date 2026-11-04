@@ -2,7 +2,16 @@
 
 Native WebView dark mode manager for Capacitor with algorithmic darkening, system theme change listener, and instant HTML dark class synchronization.
 
-## Install
+## Install (GitHub Packages)
+
+Configure your project `.npmrc` to resolve the `@laylalabs` scope from GitHub Packages:
+
+```ini
+@laylalabs:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+Then install via `pnpm`:
 
 ```bash
 pnpm add @laylalabs/capacitor-webview-darkmode

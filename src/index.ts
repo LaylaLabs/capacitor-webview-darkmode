@@ -9,3 +9,4 @@ const LaylaWebviewDarkmode = registerPlugin<WebviewDarkmodePlugin>('LaylaWebview
 export * from './definitions';
 export { LaylaWebviewDarkmode };
 export default LaylaWebviewDarkmode;
+
