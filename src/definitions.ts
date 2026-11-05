@@ -1,4 +1,5 @@
 import type { PluginListenerHandle } from '@capacitor/core';
+import type {} from '@capacitor/cli';
 
 export type DarkModePreference = 'auto' | 'dark' | 'light';
 
@@ -72,5 +73,14 @@ export interface WebviewDarkmodePlugin {
    * Removes all registered event listeners.
    */
   removeAllListeners(): Promise<void>;
+}
+
+declare module '@capacitor/cli' {
+  interface PluginsConfig {
+    /**
+     * LaylaLabs Native WebView Dark Mode configuration.
+     */
+    LaylaWebviewDarkmode?: WebviewDarkmodeConfig;
+  }
 }
 
